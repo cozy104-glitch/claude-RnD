@@ -24,7 +24,7 @@ export const overviewSchema = z.object({
   researchField: z.string(),
   technologyArea: z.string(),
   keywords: z.array(z.string()),
-  summary: z.string().max(500, "연구요약은 최대 500자까지 입력할 수 있습니다"),
+  summary: z.string().max(300, "연구요약은 최대 300자까지 입력할 수 있습니다"),
 });
 
 export type OverviewFormValues = z.infer<typeof overviewSchema>;

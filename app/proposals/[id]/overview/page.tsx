@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -31,12 +30,13 @@ export default function OverviewPage() {
 
   const watchedValues = form.watch();
 
-  const handleSave = useCallback(() => {
+  // useAutoSave에 전달되는 함수는 내부적으로 ref로 관리되므로 useCallback 불필요
+  const handleAutoSave = () => {
     updateSection("overview", watchedValues);
     saveProposal();
-  }, [watchedValues, updateSection, saveProposal]);
+  };
 
-  useAutoSave(watchedValues, handleSave);
+  useAutoSave(watchedValues, handleAutoSave);
 
   const onSubmit = (data: OverviewFormValues) => {
     updateSection("overview", data);
@@ -167,7 +167,7 @@ export default function OverviewPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="summary">연구요약 (500자 이내)</Label>
+              <Label htmlFor="summary">연구요약 (300자 이내)</Label>
               <Textarea
                 id="summary"
                 rows={6}

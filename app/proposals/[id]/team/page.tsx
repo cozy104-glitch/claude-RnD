@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Plus, Trash2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -104,7 +104,7 @@ export default function TeamPage() {
     team?.participants || []
   );
 
-  const handleSave = useCallback(() => {
+  const handleSave = () => {
     updateSection("team", {
       leadResearcher,
       coResearchers,
@@ -113,7 +113,7 @@ export default function TeamPage() {
     });
     saveProposal();
     toast.success("연구팀 구성이 저장되었습니다.");
-  }, [leadResearcher, coResearchers, participants, team, updateSection, saveProposal]);
+  };
 
   const handleAiGenerate = () => {
     startStream("/api/ai/generate", {

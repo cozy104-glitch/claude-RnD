@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -28,12 +27,12 @@ export default function ContentPage() {
 
   const watchedValues = form.watch();
 
-  const handleSave = useCallback(() => {
+  const handleAutoSave = () => {
     updateSection("content", watchedValues);
     saveProposal();
-  }, [watchedValues, updateSection, saveProposal]);
+  };
 
-  useAutoSave(watchedValues, handleSave);
+  useAutoSave(watchedValues, handleAutoSave);
 
   const onSubmit = (data: ContentFormValues) => {
     updateSection("content", data);

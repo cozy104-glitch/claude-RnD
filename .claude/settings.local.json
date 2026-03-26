@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/overview/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/objectives/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/content/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/prior-research/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/budget/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/team/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/impact/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/implementation/)",
+      "Bash(ls /c/Users/cozy1/Documents/workspace/gov-proposal-writer/app/proposals/[id]/preview/)",
+      "Bash(npx tsc:*)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(npx next:*)",
+      "Bash(cp /c/Users/cozy1/Documents/workspace/gov-proposal-writer/proxy.ts /c/Users/cozy1/Documents/workspace/gov-proposal-writer/middleware.ts)",
+      "Bash(rm /c/Users/cozy1/Documents/workspace/gov-proposal-writer/proxy.ts)",
+      "Bash(git add:*)"
+    ]
+  }
+}

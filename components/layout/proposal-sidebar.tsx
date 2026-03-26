@@ -52,7 +52,8 @@ function SidebarContent({ proposalId, sectionMeta }: ProposalSidebarProps) {
       <ScrollArea className="flex-1 p-2">
         <nav className="space-y-1">
           {proposalSections.map((section) => {
-            const meta = sectionMeta.find((m) => m.id === section.href);
+            // sectionId(camelCase)로 meta를 매핑하고, URL은 href(kebab-case)를 사용
+            const meta = sectionMeta.find((m) => m.id === section.sectionId);
             const href = `/proposals/${proposalId}/${section.href}`;
             const isActive = pathname === href;
 

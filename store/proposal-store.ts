@@ -22,7 +22,7 @@ function createEmptyProposal(title: string, programName: string): Proposal {
     updatedAt: now,
     sections: createEmptySections(),
     sectionMeta: proposalSections.map((s) => ({
-      id: s.href as ProposalSectionId,
+      id: s.sectionId,
       title: s.title,
       status: "not_started" as const,
       completionRate: 0,
@@ -117,7 +117,7 @@ interface ProposalStore {
   isDirty: boolean;
 
   // 액션
-  loadProposalList: () => void;
+  // loadProposalList 제거: persist 미들웨어가 자동으로 localStorage에서 복원하므로 별도 로드 함수 불필요
   createProposal: (title: string, programName: string) => string;
   loadProposal: (id: string) => void;
   updateSection: <K extends ProposalSectionId>(
@@ -139,10 +139,6 @@ export const useProposalStore = create<ProposalStore>()(
       proposals: [],
       currentProposal: null,
       isDirty: false,
-
-      loadProposalList: () => {
-        // persist 미들웨어가 자동으로 proposals를 복원
-      },
 
       createProposal: (title: string, programName: string) => {
         const proposal = createEmptyProposal(title, programName);

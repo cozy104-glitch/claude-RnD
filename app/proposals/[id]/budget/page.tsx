@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import {
   formatKRW,
 } from "@/lib/budget/calculator";
 import { useProposalStore } from "@/store/proposal-store";
+import { useAutoSave } from "@/hooks/use-auto-save";
 
 export default function BudgetPage() {
   const { currentProposal, updateSection, saveProposal } = useProposalStore();
@@ -33,8 +34,9 @@ export default function BudgetPage() {
   );
   const [indirectRate, setIndirectRate] = useState(budget?.indirectCosts.rate || 20);
 
-  // 계산
-  const directCosts = {
+  // 직접비 객체: useMemo로 안정화 — 참조가 안정적이어야 useAutoSave deps에서
+  // 불필요한 재계산이 발생하지 않는다
+  const directCosts = useMemo(() => ({
     personnelCosts,
     equipmentCosts,
     travelCosts: budget?.directCosts.travelCosts || [],
@@ -42,7 +44,8 @@ export default function BudgetPage() {
     outsourcingCosts: budget?.directCosts.outsourcingCosts || [],
     otherCosts: budget?.directCosts.otherCosts || [],
     subtotal: 0,
-  };
+  }), [personnelCosts, equipmentCosts, budget?.directCosts]);
+
   const directSubtotal = calculateDirectCostsSubtotal(directCosts);
   const indirectAmount = calculateIndirectCosts(directSubtotal, indirectRate);
   const totalBudget = calculateTotalBudget(directSubtotal, indirectAmount);
@@ -63,7 +66,8 @@ export default function BudgetPage() {
     ]);
   };
 
-  const handleSave = useCallback(() => {
+  // 예산 상태를 스토어에 동기화하는 함수 — useAutoSave와 수동 저장 모두 사용
+  const persistBudget = () => {
     const updatedBudget: ResearchBudget = {
       totalAmount: totalBudget,
       directCosts: { ...directCosts, subtotal: directSubtotal },
@@ -72,8 +76,16 @@ export default function BudgetPage() {
     };
     updateSection("budget", updatedBudget);
     saveProposal();
+  };
+
+  // 자동저장: 인건비/장비비/간접비율 변경 시 3초 후 자동 저장
+  useAutoSave({ personnelCosts, equipmentCosts, indirectRate }, persistBudget);
+
+  // 수동 저장 버튼용 — 토스트 포함
+  const handleSave = () => {
+    persistBudget();
     toast.success("연구예산이 저장되었습니다.");
-  }, [totalBudget, directCosts, directSubtotal, indirectRate, indirectAmount, budget, updateSection, saveProposal]);
+  };
 
   return (
     <div className="space-y-6">

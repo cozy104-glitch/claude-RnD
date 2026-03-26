@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,15 +20,16 @@ export default function ImplementationPage() {
 
   const [collaborations, setCollaborations] = useState(implementation?.collaborations || "");
 
-  const handleSave = useCallback(() => {
-    if (!implementation) return;
+  const handleSave = () => {
+    // implementation이 없더라도 collaborations만 저장 가능하도록 기본값 사용
     updateSection("implementation", {
-      ...implementation,
+      schedule: implementation?.schedule || [],
+      roles: implementation?.roles || [],
       collaborations,
     });
     saveProposal();
     toast.success("추진체계가 저장되었습니다.");
-  }, [collaborations, implementation, updateSection, saveProposal]);
+  };
 
   const handleAiGenerate = () => {
     startStream("/api/ai/generate", {

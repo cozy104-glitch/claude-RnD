@@ -21,8 +21,15 @@ export function useAiStream() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "AI 요청 실패");
+        // 에러 응답이 JSON이 아닐 수 있으므로 Content-Type 확인 후 파싱
+        const contentType = response.headers.get("Content-Type") || "";
+        if (contentType.includes("application/json")) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "AI 요청 실패");
+        } else {
+          const errorText = await response.text();
+          throw new Error(errorText || `AI 요청 실패 (${response.status})`);
+        }
       }
 
       const reader = response.body?.getReader();
